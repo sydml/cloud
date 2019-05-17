@@ -1,0 +1,14 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+rootProject.name = 'cloud'
+include("common:common-base")
+include("common:common-redis")
+include("common:common-redission")
+include("platform:eureka-server")
+include("service:authorization:authorization-service")
+include("service:transaction:transaction-service")
+include("service:mybatis:mybatis-service")
+include("service:gateway:gateway-service")

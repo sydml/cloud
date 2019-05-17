@@ -1,0 +1,14 @@
+dependencies{
+    compile project(":common:common-base")
+    compile("redis.clients:jedis:2.9.0")
+    compile("org.apache.commons:commons-pool2: 2.5.0")
+    compile("com.fasterxml.jackson.core:jackson-databind:2.8.10")
+    compile("org.springframework.boot:spring-boot-starter:${springBootVersion}"){
+        exclude group: 'io.lettuce',module: "lettuce-core"
+    }
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}"){
+        exclude group: "org.slf4j", module: "slf4j-log4j12"
+    }
+    compile("org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}")
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+}
