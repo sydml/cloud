@@ -14,7 +14,7 @@ spring:
   application:
     name: authorization
   zipkin:
-    base-url: http://47.104.134.60:9411
+    base-url: http://localhost:9411
     sleuth:
       sampler:
         probability: 1

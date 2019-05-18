@@ -11,7 +11,6 @@ import com.sydml.mybaits.dao.UserMapper;
 import com.sydml.mybaits.dto.RequestInfo;
 import com.sydml.mybaits.dto.User;
 import com.sydml.mybaits.service.IUserLoginService;
-import com.sydml.mybatis.api.feign.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,16 +24,13 @@ import java.util.Map;
  * 时间： 19:51
  */
 @RestController
-@RequestMapping("mybatis")
+@RequestMapping("get-all")
 public class UserController {
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
     private IUserLoginService loginServie;
-
-    @Autowired
-    private IUserService userService;
 
     @GetMapping
     public List<ResultMap> getAll() {
@@ -89,7 +85,7 @@ public class UserController {
     @GetMapping("find-by-username")
     @ResponseBody
     public UserDTO findByUsername(@RequestParam(value = "username") String username) {
-        UserDTO userDTO = userService.findByUsername(username);
+        UserDTO userDTO = loginServie.findByUsername(username);
         return userDTO;
     }
 
