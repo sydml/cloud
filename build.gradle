@@ -148,7 +148,7 @@ configure(subprojects.findAll { it.subprojects.empty && it.name.endsWith("-servi
         compile("org.springframework.cloud:spring-cloud-starter-netflix-hystrix-dashboard")
         // 配置服务链路追踪
         compile("org.springframework.cloud:spring-cloud-starter-zipkin")
-        compile("org.springframework.cloud:spring-cloud-starter-sleuth")
+//        compile("org.springframework.cloud:spring-cloud-starter-sleuth")
     }
 }
 
@@ -199,3 +199,26 @@ configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("gate
     }
 }
 
+configure(subprojects.findAll {it.subprojects.empty && it.name.endsWith("-api")}) {
+    apply plugin: "io.spring.dependency-management"
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
+        }
+    }
+
+    dependencies {
+        // Lombok
+        compileOnly ("org.projectlombok:lombok")
+        annotationProcessor ("org.projectlombok:lombok")
+
+        // Spring REST Jersey
+        compile("org.springframework.boot:spring-boot-starter-jersey")
+        // Spring Validation
+        compile("org.springframework.boot:spring-boot-starter-validation")
+
+        compile("org.springframework.cloud:spring-cloud-starter-openfeign")
+    }
+}

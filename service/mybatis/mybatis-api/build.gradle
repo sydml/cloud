@@ -1,4 +1,3 @@
 dependencies{
     compile project(":common:common-base")
-    compile project(":service:mybatis:mybatis-api")
 }
