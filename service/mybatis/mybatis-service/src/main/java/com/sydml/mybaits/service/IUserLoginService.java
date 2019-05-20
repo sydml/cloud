@@ -2,6 +2,7 @@ package com.sydml.mybaits.service;
 
 import com.sydml.common.api.dto.LoginInfo;
 import com.sydml.common.api.dto.UserDTO;
+import com.sydml.mybaits.service.impl.UserLoginServiceImpl;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author Liuym
  * @date 2019/5/12 0012
  */
-@FeignClient(value = "authorization")
+@FeignClient(value = "authorization",fallback = UserLoginServiceImpl.class)
 public interface IUserLoginService {
     @PostMapping(value = "user/login")
     void login(LoginInfo loginInfo);
