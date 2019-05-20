@@ -24,7 +24,7 @@ import java.util.Map;
  * 时间： 19:51
  */
 @RestController
-@RequestMapping("get-all")
+@RequestMapping("mybatis")
 public class UserController {
     @Autowired
     private UserMapper userMapper;

@@ -1,11 +1,13 @@
 package com.sydml.transaction.controller;
 
 import com.sydml.common.api.dto.LoginInfo;
+import com.sydml.common.api.dto.UserDTO;
 import com.sydml.transaction.api.IUser1Service;
 import com.sydml.transaction.api.IUser2Service;
 import com.sydml.transaction.domain.User1;
 import com.sydml.transaction.domain.User2;
 import com.sydml.transaction.feign.IUserLoginService;
+import com.sydml.transaction.feign.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,9 @@ public class UserController {
 
     @Autowired
     private IUserLoginService userLoginService;
+
+    @Autowired
+    private IUserService userService;
 
     @RequestMapping("/trx")
     @ResponseBody
@@ -69,5 +74,10 @@ public class UserController {
     @ResponseBody
     public String login(@RequestBody(required = true) LoginInfo loginInfo) {
         return userLoginService.login(loginInfo);
+    }
+
+    @RequestMapping(value = "/find-by-username", method = RequestMethod.GET)
+    public UserDTO findByUsername(@RequestParam("username") String username) {
+      return userService.findByUsername("ming");
     }
 }
