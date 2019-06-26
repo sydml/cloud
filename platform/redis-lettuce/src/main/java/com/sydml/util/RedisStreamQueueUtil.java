@@ -1,38 +1,36 @@
 package com.sydml.util;
 
 import com.sydml.config.RedisConnections;
+import com.sydml.constant.QueueName;
+import io.lettuce.core.StreamMessage;
+import io.lettuce.core.XReadArgs;
 import io.lettuce.core.api.sync.RedisCommands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+import java.util.List;
 
 /**
  * @author Liuym
  * @date 2019/6/26 0026
  */
-
-public final class RedisQueueUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RedisQueueUtil.class);
+public class RedisStreamQueueUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedisStreamQueueUtil.class);
 
     private static final int MAX_RETRY_NUMBER = 5;
-    private static final int TIMEOUT_SECOND = 3;
 
-    public static void push(String message) {
-        send("test-queue", message);
+    public static void publish(String message) {
+            send(QueueName.TEST_QUEUE, message);
     }
 
-    public static void push(String queue, String message) {
-        send(queue, message);
-    }
-
-    public static String pop(String queue) {
+    public static String subscription(String queue) {
         try {
-            RedisCommands<String, String> redisCommands = RedisConnections.lockConnection().sync();
-            Long exists = redisCommands.exists(queue);
-            if (exists == 0) {
-                return null;
+            RedisCommands<String, String> redisCommands = RedisConnections.streamConnection().sync();
+            List<StreamMessage<String, String>> messages = redisCommands.xread(XReadArgs.Builder.block(Duration.ofSeconds(2)), XReadArgs.StreamOffset.latest(queue));
+            for (StreamMessage<String, String> streamMessage : messages) {
+                System.out.println(streamMessage);
             }
-            return redisCommands.brpop(TIMEOUT_SECOND, queue).getValue();
         } catch (Exception e) {
             LOGGER.error("RedisQueueMessage subscription message error, queue: " + queue + ", e:", e);
         }
@@ -48,8 +46,8 @@ public final class RedisQueueUtil {
     }
 
     private static void doSend(String queue, String message) {
-        RedisCommands<String, String> redisCommands = RedisConnections.lockConnection().sync();
-        redisCommands.lpush(queue, message);
+        RedisCommands<String, String> redisCommands = RedisConnections.streamConnection().sync();
+        String messageOffset = redisCommands.xadd(queue, message);
     }
 
     private static void retry(String queue, String message) {
@@ -68,4 +66,3 @@ public final class RedisQueueUtil {
     }
 
 }
-

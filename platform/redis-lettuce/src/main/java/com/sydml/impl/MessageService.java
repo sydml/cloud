@@ -26,15 +26,15 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public void sendDelayMessage(RedisMessage redisMessage) {
-        String message = JsonUtil.encodeJson(redisMessage);
-        RedisQueueUtil.push(QueueName.DELAY_TEST_QUEUE, message);
-    }
-
-    @Override
     public void sendMessage(String queue, RedisMessage redisMessage) {
         String message = JsonUtil.encodeJson(redisMessage);
         RedisQueueUtil.push(queue, message);
+    }
+
+    @Override
+    public void sendDelayMessage(RedisMessage redisMessage) {
+        String message = JsonUtil.encodeJson(redisMessage);
+        RedisQueueUtil.push(QueueName.DELAY_TEST_QUEUE, message);
     }
 
     @Override
