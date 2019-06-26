@@ -39,5 +39,12 @@ public class UserService implements IUserService {
         return beanMapper.map(userRepository.findById(id).orElseGet(null), UserDTO.class);
     }
 
-
+    public static void main(String[] args) {
+        Long a = 0L;
+        Long b = 0L;
+        System.out.println(a == b);
+        Long c = 129L;
+        Long d = 129L;
+        System.out.println(c == d);
+    }
 }

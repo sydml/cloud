@@ -1,0 +1,34 @@
+dependencies{
+    ext{
+        guavaVersion = "27.1-jre"
+        orikaVersion = "1.5.4"
+        modelmapperVersion = "2.3.3"
+        fastJsonVersion = "1.2.57"
+        commonsIoVersion = "2.6"
+        commonsCodecVersion = "1.12"
+        commonsLang3Version = "3.9"
+        commonsBeanutilsVersion = "1.9.3"
+        commonsCollectionsVersion = "3.2.2"
+        commonsCollections4Version = "4.3"
+        cglibVersion = "3.2.5"
+    }
+    // Google Guava
+    compile("com.google.guava:guava:${guavaVersion}")
+
+    // Orika
+    compile("ma.glasnost.orika:orika-core:${orikaVersion}")
+    // ModelMapper
+    compile("org.modelmapper:modelmapper:${modelmapperVersion}")
+
+    // FastJSON
+    compile("com.alibaba:fastjson:${fastJsonVersion}")
+
+    // Commons
+    compile("commons-io:commons-io:${commonsIoVersion}")
+    compile("commons-codec:commons-codec:${commonsCodecVersion}")
+    compile("org.apache.commons:commons-lang3:${commonsLang3Version}")
+    compile("commons-beanutils:commons-beanutils:${commonsBeanutilsVersion}")
+    compile("commons-collections:commons-collections:${commonsCollectionsVersion}")
+    compile("org.apache.commons:commons-collections4:${commonsCollections4Version}")
+    compile("cglib:cglib:${cglibVersion}")
+}

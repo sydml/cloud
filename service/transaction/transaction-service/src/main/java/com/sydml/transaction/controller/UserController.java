@@ -11,6 +11,8 @@ import com.sydml.transaction.feign.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 /**
  * @author Liuym
  * @date 2019/3/13 0013
@@ -78,6 +80,19 @@ public class UserController {
 
     @RequestMapping(value = "/find-by-username", method = RequestMethod.GET)
     public UserDTO findByUsername(@RequestParam("username") String username) {
+        new Thread(()->{
+            try {
+                System.out.println("child thread sleep...");
+                Thread.sleep(61000);
+                System.out.println("child thread sleep over");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
       return userService.findByUsername("ming");
+    }
+
+    public static void main(String[] args){
+      System.out.println("sdfa");
     }
 }
