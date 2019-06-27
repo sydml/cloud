@@ -110,6 +110,8 @@ configure(subprojects.findAll { it.subprojects.empty && it.name.endsWith("-servi
         testCompile("org.springframework.boot:spring-boot-starter-test")
         compile("org.springframework.boot:spring-boot-starter-data-redis")
         compile("org.springframework.boot:spring-boot-starter-data-jpa")
+        compile("org.springframework.boot:spring-boot-starter-jersey")
+
 
         //cloud
         // Eureka-client
