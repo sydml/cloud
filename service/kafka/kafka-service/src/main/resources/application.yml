@@ -17,13 +17,9 @@ hystrix:
       execution:
         timeout:
           enabled: false
-server:
-  port: 8081
-  tomcat:
-    uri-encoding: UTF-8
 spring:
   application:
-    name: transaction
+    name: kafka-service
   zipkin:
     base-url: http://localhost:9411
     sender:
@@ -31,40 +27,12 @@ spring:
     locator:
       discovery:
         enabled: true
-  sleuth:
-    sampler:
-      probability: 1.0
-    web:
-      client:
-        enabled: true
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    druid:
-      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-      filters: stat,wall
-      initial-size: 5
-      max-active: 20
-      max-pool-prepared-statement-per-connection-size: 20
-      max-wait: 60000
-      min-evictable-idle-time-millis: 300000
-      min-idle: 5
-      pool-prepared-statements: true
-      test-on-borrow: false
-      test-on-return: false
-      test-while-idle: true
-      time-between-eviction-runs-millis: 60000
-      valid-connection-checker-class-name: com.alibaba.druid.pool.vendor.MSSQLValidConnectionChecker
-      validation-query: SELECT 1 FROM DUAL
-    password: 1234
-    type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3306/laboratory?characterEncoding=UTF-8&serverTimezone=GMT%2B8
-    username: root
-  http:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
-
+    sleuth:
+      sampler:
+        probability: 1.0
+      web:
+        client:
+          enabled: true
   kafka:
     # 指定kafka 代理地址，可以多个
     bootstrap-servers: 47.104.134.60:9092

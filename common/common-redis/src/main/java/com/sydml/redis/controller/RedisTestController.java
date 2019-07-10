@@ -43,4 +43,10 @@ public class RedisTestController {
             redisDelayQueue.sendMessage("message", "test" + i);
         }
     }
+
+    @GetMapping("/send-message")
+    public String getMessage() {
+       return redisDelayQueue.getMessage("message").toString();
+    }
+
 }
