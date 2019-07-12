@@ -26,7 +26,7 @@ public class RedisConnections {
 
     private static StatefulRedisConnection<String, String> initConnection(Integer integer) {
 
-        RedisClient redisClient = RedisClient.create("redis://localhost:6379/" + integer);
+        RedisClient redisClient = RedisClient.create("redis://140.143.235.74:6379/" + integer);
         return redisClient.connect();
     }
 
@@ -43,7 +43,7 @@ public class RedisConnections {
     }
 
     public static void main(String[] args) {
-        StatefulRedisConnection<String, String> connection = getConnection(1);
+        StatefulRedisConnection<String, String> connection = streamConnection();
         RedisCommands<String, String> redisCommands = connection.sync();
         redisCommands.set("aa", "test");
         System.out.println(redisCommands.get("aa"));
@@ -55,13 +55,13 @@ public class RedisConnections {
         List<StreamMessage<String, String>> messages = redisCommands.xrange("my-stream", Range.create("-", "+"));
         redisCommands.xread(XReadArgs.Builder.block(Duration.ofSeconds(1)),XReadArgs.StreamOffset.from("my-stream","0"));
 //        List<IStreamMessage<String, String>> streamMessages = redisCommands.xread(XReadArgs.StreamOffset.from("my-stream",messageId));
-        for (StreamMessage<String, String> message : messages) {
+       /* for (StreamMessage<String, String> message : messages) {
             for (Map.Entry<String, String> ms : message.getBody().entrySet()) {
                 System.out.println(ms.getValue());
             }
-            redisCommands.xack("my-stream", "afs", message.getId());
+//            redisCommands.xack("my-stream", "afs", message.getId());
         }
-        List<StreamMessage<String, String>> messages2 = redisCommands.xrange("my-stream", Range.create("-", "+"));
+        List<StreamMessage<String, String>> messages2 = redisCommands.xrange("my-stream", Range.create("-", "+"));*/
 
 //        redisCommands.del("my-stream");
 //        otherTest(redisCommands, messageId);
