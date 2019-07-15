@@ -64,18 +64,6 @@ public class RedisConnections {
         String messageId4 = redisCommands.xadd("produce", Collections.singletonMap("key4", "value4"));
         List<StreamMessage<String, String>> messages = redisCommands.xrange("produce", Range.create("-", "+"));
         redisCommands.xread(XReadArgs.Builder.block(Duration.ofSeconds(1)),XReadArgs.StreamOffset.from("produce","0"));
-//        List<IStreamMessage<String, String>> streamMessages = redisCommands.xread(XReadArgs.StreamOffset.from("produce",messageId));
-       /* for (StreamMessage<String, String> message : messages) {
-            for (Map.Entry<String, String> ms : message.getBody().entrySet()) {
-                System.out.println(ms.getValue());
-            }
-//            redisCommands.xack("produce", "afs", message.getId());
-        }
-        List<StreamMessage<String, String>> messages2 = redisCommands.xrange("produce", Range.create("-", "+"));*/
-
-//        redisCommands.del("produce");
-//        otherTest(redisCommands, messageId);
-
     }
 
     private static void otherTest(RedisCommands<String, String> redisCommands, String messageId) {
