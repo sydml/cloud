@@ -4,14 +4,14 @@ package com.sydml.config;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.cluster.RedisClusterClient;
 
 import java.time.Duration;
-import java.time.temporal.TemporalUnit;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Liuym
@@ -26,7 +26,7 @@ public class RedisConnections {
 
     private static StatefulRedisConnection<String, String> initConnection(Integer integer) {
 
-        RedisClient redisClient = RedisClient.create("redis://140.143.235.74:6379/" + integer);
+        RedisClient redisClient = RedisClient.create("redis://127.0.0.1:6381/" + integer);
         return redisClient.connect();
     }
 
@@ -42,44 +42,54 @@ public class RedisConnections {
         return getConnection(6);
     }
 
+    public static RedisClusterClient getClusterClient() {
+        ArrayList<RedisURI> list = new ArrayList<>();
+        list.add(RedisURI.create("redis://127.0.0.1:7001"));
+        list.add(RedisURI.create("redis://127.0.0.1:7002"));
+        list.add(RedisURI.create("redis://127.0.0.1:7003"));
+        list.add(RedisURI.create("redis://127.0.0.1:7004"));
+        list.add(RedisURI.create("redis://127.0.0.1:7005"));
+        list.add(RedisURI.create("redis://127.0.0.1:7006"));
+        RedisClusterClient client = RedisClusterClient.create(list);
+        return client;
+    }
+
     public static void main(String[] args) {
         StatefulRedisConnection<String, String> connection = streamConnection();
         RedisCommands<String, String> redisCommands = connection.sync();
-        redisCommands.set("aa", "test");
-        System.out.println(redisCommands.get("aa"));
-        String messageId = redisCommands.xadd("my-stream", Collections.singletonMap("key1", "value1"));
-        String messageId1 = redisCommands.xadd("my-stream","myStream-test","myStream-test2");
-        String messageId2 = redisCommands.xadd("my-stream", Collections.singletonMap("key2", "value2"));
-        String messageId3 = redisCommands.xadd("my-stream", Collections.singletonMap("key3", "value3"));
-        String messageId4 = redisCommands.xadd("my-stream", Collections.singletonMap("key4", "value4"));
-        List<StreamMessage<String, String>> messages = redisCommands.xrange("my-stream", Range.create("-", "+"));
-        redisCommands.xread(XReadArgs.Builder.block(Duration.ofSeconds(1)),XReadArgs.StreamOffset.from("my-stream","0"));
-//        List<IStreamMessage<String, String>> streamMessages = redisCommands.xread(XReadArgs.StreamOffset.from("my-stream",messageId));
+        String messageId = redisCommands.xadd("produce", Collections.singletonMap("key1", "value1"));
+        String messageId1 = redisCommands.xadd("produce","myStream-test","myStream-test2");
+        String messageId2 = redisCommands.xadd("produce", Collections.singletonMap("key2", "value2"));
+        String messageId3 = redisCommands.xadd("produce", Collections.singletonMap("key3", "value3"));
+        String messageId4 = redisCommands.xadd("produce", Collections.singletonMap("key4", "value4"));
+        List<StreamMessage<String, String>> messages = redisCommands.xrange("produce", Range.create("-", "+"));
+        redisCommands.xread(XReadArgs.Builder.block(Duration.ofSeconds(1)),XReadArgs.StreamOffset.from("produce","0"));
+//        List<IStreamMessage<String, String>> streamMessages = redisCommands.xread(XReadArgs.StreamOffset.from("produce",messageId));
        /* for (StreamMessage<String, String> message : messages) {
             for (Map.Entry<String, String> ms : message.getBody().entrySet()) {
                 System.out.println(ms.getValue());
             }
-//            redisCommands.xack("my-stream", "afs", message.getId());
+//            redisCommands.xack("produce", "afs", message.getId());
         }
-        List<StreamMessage<String, String>> messages2 = redisCommands.xrange("my-stream", Range.create("-", "+"));*/
+        List<StreamMessage<String, String>> messages2 = redisCommands.xrange("produce", Range.create("-", "+"));*/
 
-//        redisCommands.del("my-stream");
+//        redisCommands.del("produce");
 //        otherTest(redisCommands, messageId);
 
     }
 
     private static void otherTest(RedisCommands<String, String> redisCommands, String messageId) {
         // Read a message
-        List<StreamMessage<String, String>> messages = redisCommands.xread(XReadArgs.StreamOffset.from("my-stream", messageId));
+        List<StreamMessage<String, String>> messages = redisCommands.xread(XReadArgs.StreamOffset.from("produce", messageId));
         for (StreamMessage<String, String> message : messages) {
             System.out.println(message);
         }
 
-        redisCommands.xadd("my-stream", Collections.singletonMap("key", "value"));
+        redisCommands.xadd("produce", Collections.singletonMap("key", "value"));
 
         // Blocking read
-        redisCommands.xadd("my-stream", Collections.singletonMap("key", "value"));
-        List<StreamMessage<String, String>> messages2 = redisCommands.xread(XReadArgs.Builder.block(Duration.ofSeconds(2)), XReadArgs.StreamOffset.latest("my-stream"));
+        redisCommands.xadd("produce", Collections.singletonMap("key", "value"));
+        List<StreamMessage<String, String>> messages2 = redisCommands.xread(XReadArgs.Builder.block(Duration.ofSeconds(2)), XReadArgs.StreamOffset.latest("produce"));
         for (StreamMessage<String, String> message : messages2) {
             System.out.println(message);
         }
