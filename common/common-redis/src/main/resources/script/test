@@ -1,0 +1,21 @@
+	server
+        {
+                listen                   80;
+                server_name              m.jr.jd.com;
+                access_log               /export/servers/nginx/logs/m.jr.jd.com/access.log main;
+                error_log                /export/servers/nginx/logs/m.jr.jd.com/error.log warn;
+                error_page 411 = @my_error;
+                location @my_error {
+                 }
+                root html;
+      location / {
+        proxy_next_upstream     http_500 http_502 http_503 http_504 error timeout invalid_header;
+        proxy_set_header        Host demo.jr.jd.com;
+        proxy_pass              http://192.168.146.74:80;
+        expires                 0;
+        }
+        location /logs/ {
+                autoindex       off;
+                deny all;
+        }
+}

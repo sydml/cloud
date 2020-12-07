@@ -1,4 +1,4 @@
 dependencies {
     compile project(":common:common-base")
-    compile 'io.lettuce:lettuce-core:5.1.6.RELEASE'
+    compile 'io.lettuce:lettuce-core:5.3.5.RELEASE'
 }

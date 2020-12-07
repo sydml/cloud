@@ -42,6 +42,11 @@ public class Listener {
 
     public Consumer<RedisMessage> getAfterAck() {
         return afterAck;
+//        setAfterAck(req->ss(req));
+    }
+
+    public static void ss(RedisMessage redisMessage) {
+
     }
 
     public void setAfterAck(Consumer<RedisMessage> afterAck) {

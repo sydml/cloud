@@ -32,10 +32,10 @@ public class RedisTestController {
     }
 
 
-    @GetMapping("/send-message")
+    /*@GetMapping("/send-message")
     public void sendMessage() {
         redisDelayQueue.sendMessage("message", "test");
-    }
+    }*/
 
     @GetMapping("/batch-send-message")
     public void batchSendMessage() {

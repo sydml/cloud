@@ -26,7 +26,7 @@ public class RedisConnections {
 
     private static StatefulRedisConnection<String, String> initConnection(Integer integer) {
 
-        RedisClient redisClient = RedisClient.create("redis://127.0.0.1:6381/" + integer);
+        RedisClient redisClient = RedisClient.create("redis://127.0.0.1:6379/" + integer);
         return redisClient.connect();
     }
 

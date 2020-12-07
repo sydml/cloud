@@ -3,7 +3,7 @@ dependencies{
     compile("redis.clients:jedis:2.9.0")
     compile("org.apache.commons:commons-pool2: 2.5.0")
     compile("com.fasterxml.jackson.core:jackson-databind:2.8.10")
-    compile("org.redisson:redisson-spring-boot-starter:3.10.1")
+    compile("org.redisson:redisson-spring-boot-starter:3.14.0")
     compile("org.springframework.boot:spring-boot-devtools:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")

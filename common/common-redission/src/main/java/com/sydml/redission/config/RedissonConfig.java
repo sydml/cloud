@@ -1,3 +1,4 @@
+/*
 package com.sydml.redission.config;
 
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -13,20 +14,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 
+*/
 /**
  * @author Liuym
  * @date 2019/3/19 0019
- */
+ *//*
+
 @Component
-@ConfigurationProperties(prefix = "spring.redisson")
+@ConfigurationProperties(prefix = "spring.redis")
 public class RedissonConfig {
 
     private int threads = 10;
     private String codecClass = "org.redisson.codec.JsonJacksonCodec";
 
-    /**
+    */
+/**
      * 单机配置
-     */
+     *//*
+
     @NestedConfigurationProperty
     private SingleServerConfigProp singleServer;
 
@@ -88,3 +93,4 @@ public class RedissonConfig {
         private int dnsMonitoringInterval = 5000;
     }
 }
+*/

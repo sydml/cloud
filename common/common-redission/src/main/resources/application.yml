@@ -9,13 +9,7 @@ spring:
     database: 11
     host: 127.0.0.1
     port: 6379
-    password: masterpass
     timeout: 10000
   # redisson单机配置
   redisson:
-    singleServer:
-      clientName: my-single-redis
-      address: redis://${spring.redis.host}:${spring.redis.port}
-      password: ${spring.redis.password}
-      database: ${spring.redis.database}
-      timeout: ${spring.redis.timeout}
+    config:classpath:redisson-single-dev.yml

@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.sydml.mybaits.base.ResultMap;
 import com.sydml.mybaits.dto.User;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 

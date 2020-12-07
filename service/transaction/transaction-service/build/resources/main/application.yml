@@ -1,3 +1,22 @@
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8100/eureka
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
+feign:
+  hystrix:
+    enabled: true
+#### hystrix禁止服务超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
 server:
   port: 8081
   tomcat:
@@ -7,9 +26,17 @@ spring:
     name: transaction
   zipkin:
     base-url: http://localhost:9411
-    sleuth:
-      sampler:
-        probability: 1
+    sender:
+      type: web
+    locator:
+      discovery:
+        enabled: true
+  sleuth:
+    sampler:
+      probability: 1.0
+    web:
+      client:
+        enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     druid:
@@ -37,24 +64,28 @@ spring:
       charset: UTF-8
       enabled: true
       force: true
-eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8100/eureka
-ribbon:
-  ReadTimeout: 3000
-  ConnectTimeout: 3000
-feign:
-  hystrix:
-    enabled: true
-#### hystrix禁止服务超时时间
-hystrix:
-  command:
-    default:
-      execution:
-        timeout:
-          enabled: false
-swagger:
-  base-package: com.sydml.transaction.controller
+
+  kafka:
+    # 指定kafka 代理地址，可以多个
+    bootstrap-servers: 47.104.134.60:9092
+    producer:
+      retries: 0
+      # 每次批量发送消息的数量
+      batch-size: 16384
+      # 缓存容量
+      buffer-memory: 33554432
+      # 指定消息key和消息体的编解码方式
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      # 指定默认消费者group id
+      group-id: consumer-tutorial
+      auto-commit-interval: 100
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      # 指定消息key和消息体的编解码方式
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    # 指定listener 容器中的线程数，用于提高并发量
+    listener:
+      concurrency: 3
