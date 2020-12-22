@@ -47,7 +47,7 @@ public class RedisApplicationTest {
 
     @Test
     public void testLock(){
-        Object eval = jedis.eval(StreamUtil.getString(Thread.currentThread().getContextClassLoader().getResourceAsStream("script/jedisReentrantLock.lua")), 2, "jedisLockKey", "lockName","3600000000");
+        Object eval = jedis.eval(StreamUtil.getString(Thread.currentThread().getContextClassLoader().getResourceAsStream("script/jedisReentrantLock.lua")), 2, "jedisLockKey", "lockNameTest","3600000000");
         System.out.println();
     }
 

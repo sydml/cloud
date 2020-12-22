@@ -65,7 +65,7 @@ spring:
       validation-query: SELECT 1 FROM DUAL
     password: 1234
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3306/laboratory?characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://127.0.0.1:3306/laboratory?characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false
     username: root
   http:
     encoding:

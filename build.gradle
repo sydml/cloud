@@ -67,7 +67,7 @@ configure(allprojects.findAll { it.subprojects.empty }) {
 configure(subprojects.findAll { it.subprojects.empty && it.name.endsWith("-service")  && !it.name.startsWith("gateway-")}) {
     ext {
         commonPoolVersion = "2.5.0"
-        mysqlConnectionVersion = "6.0.5"
+        mysqlConnectionVersion = "8.0.11"
         duridVersion = "1.1.10"
         poiVersion = "3.12"
         opencsvVserion = "4.5"
@@ -164,6 +164,7 @@ configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("gate
         project.name
     }
     dependencies {
+        compile("org.springframework.boot:spring-boot-starter-data-redis-reactive")
         runtime("org.springframework.boot:spring-boot-devtools")
         compile("org.springframework.boot:spring-boot-starter-actuator")
         testCompile("org.springframework.boot:spring-boot-starter-test")
