@@ -1,0 +1,4 @@
+dependencies {
+    compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '2.2.4.RELEASE'
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+}

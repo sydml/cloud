@@ -126,7 +126,7 @@ configure(subprojects.findAll { it.subprojects.empty && it.name.endsWith("-servi
     }
 }
 
-configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("eureka-") }) {
+configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("platform-")}) {
     ext {
 
     }
@@ -148,29 +148,29 @@ configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("eure
     }
 }
 
-configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("gateway-") }) {
-    ext {
-
-    }
-    apply plugin: "org.springframework.boot"
-    apply plugin: "io.spring.dependency-management"
-    dependencyManagement {
-        imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
-        }
-    }
-    bootJar {
-        project.name
-    }
-    dependencies {
-        compile("org.springframework.boot:spring-boot-starter-data-redis-reactive")
-        runtime("org.springframework.boot:spring-boot-devtools")
-        compile("org.springframework.boot:spring-boot-starter-actuator")
-        testCompile("org.springframework.boot:spring-boot-starter-test")
-        // Eureka server
-        compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-        compile("org.springframework.cloud:spring-cloud-starter-gateway")
-    }
-}
+//configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("gateway-") }) {
+//    ext {
+//
+//    }
+//    apply plugin: "org.springframework.boot"
+//    apply plugin: "io.spring.dependency-management"
+//    dependencyManagement {
+//        imports {
+//            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+//            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
+//        }
+//    }
+//    bootJar {
+//        project.name
+//    }
+//    dependencies {
+//        compile("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+//        runtime("org.springframework.boot:spring-boot-devtools")
+//        compile("org.springframework.boot:spring-boot-starter-actuator")
+//        testCompile("org.springframework.boot:spring-boot-starter-test")
+//        // Eureka server
+//        compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+//        compile("org.springframework.cloud:spring-cloud-starter-gateway")
+//    }
+//}
 
