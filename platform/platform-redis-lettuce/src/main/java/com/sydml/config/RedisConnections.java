@@ -1,10 +1,12 @@
 package com.sydml.config;
 
 
+import com.sydml.common.utils.StreamUtil;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.cluster.RedisClusterClient;
+import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ public class RedisConnections {
     }
 
     public static RedisClusterClient getClusterClient() {
-        ArrayList<RedisURI> list = new ArrayList<>();
+        /*ArrayList<RedisURI> list = new ArrayList<>();
         list.add(RedisURI.create("redis://192.168.207.88:7001"));
         list.add(RedisURI.create("redis://192.168.207.88:7002"));
         list.add(RedisURI.create("redis://192.168.207.88:7003"));
@@ -51,16 +53,16 @@ public class RedisConnections {
         list.add(RedisURI.create("redis://192.168.207.88:7005"));
         list.add(RedisURI.create("redis://192.168.207.88:7006"));
         RedisClusterClient client = RedisClusterClient.create(list);
-        return client;
+        return client;*/
 
-        /*RedisURI redisURI = RedisURI.builder().withHost("192.168.207.88").withPort(7001)
+        RedisURI redisURI = RedisURI.builder().withHost("192.168.207.88").withPort(7001)
                 .withHost("192.168.207.88").withPort(7002)
                 .withHost("192.168.207.88").withPort(7003)
                 .withHost("192.168.207.88").withPort(7004)
                 .withHost("192.168.207.88").withPort(7005)
                 .withHost("192.168.207.88").withPort(7006).build();
         RedisClusterClient redisClusterClient = RedisClusterClient.create(redisURI);
-        return redisClusterClient;*/
+        return redisClusterClient;
     }
 
     public static void main(String[] args) {
@@ -74,7 +76,13 @@ public class RedisConnections {
         List<StreamMessage<String, String>> messages = redisCommands.xrange("produce", Range.create("-", "+"));
         redisCommands.xread(XReadArgs.Builder.block(Duration.ofSeconds(1)),XReadArgs.StreamOffset.from("produce","0"));*/
         RedisClusterClient clusterClient = getClusterClient();
-        clusterClient.connect().sync().set("clusterKey", "123");
+        clusterClient.connect().sync().set("clusterKey", "234");
+        RedisAdvancedClusterCommands<String, String> redisCommands = clusterClient.connect().sync();
+        Object lock = redisCommands.eval(StreamUtil.getString(Thread.currentThread().getContextClassLoader().getResourceAsStream("script/lettuceReentrantLock.lua")), ScriptOutputType.INTEGER, new String[]{"{lettuceLockName}", "{lockKeyTest}"}, "36000000");
+        System.out.println();
+        Object unlock = redisCommands.eval(StreamUtil.getString(Thread.currentThread().getContextClassLoader().getResourceAsStream("script/lettuceReentrantUnLock.lua")), ScriptOutputType.INTEGER, new String[]{"{lettuceLockName}", "lockKey"}, "36000000");
+        System.out.println();
+
         System.out.println();
     }
 
