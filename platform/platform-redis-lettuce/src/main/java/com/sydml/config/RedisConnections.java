@@ -44,18 +44,27 @@ public class RedisConnections {
 
     public static RedisClusterClient getClusterClient() {
         ArrayList<RedisURI> list = new ArrayList<>();
-        list.add(RedisURI.create("redis://127.0.0.1:7001"));
-        list.add(RedisURI.create("redis://127.0.0.1:7002"));
-        list.add(RedisURI.create("redis://127.0.0.1:7003"));
-        list.add(RedisURI.create("redis://127.0.0.1:7004"));
-        list.add(RedisURI.create("redis://127.0.0.1:7005"));
-        list.add(RedisURI.create("redis://127.0.0.1:7006"));
+        list.add(RedisURI.create("redis://192.168.207.88:7001"));
+        list.add(RedisURI.create("redis://192.168.207.88:7002"));
+        list.add(RedisURI.create("redis://192.168.207.88:7003"));
+        list.add(RedisURI.create("redis://192.168.207.88:7004"));
+        list.add(RedisURI.create("redis://192.168.207.88:7005"));
+        list.add(RedisURI.create("redis://192.168.207.88:7006"));
         RedisClusterClient client = RedisClusterClient.create(list);
         return client;
+
+        /*RedisURI redisURI = RedisURI.builder().withHost("192.168.207.88").withPort(7001)
+                .withHost("192.168.207.88").withPort(7002)
+                .withHost("192.168.207.88").withPort(7003)
+                .withHost("192.168.207.88").withPort(7004)
+                .withHost("192.168.207.88").withPort(7005)
+                .withHost("192.168.207.88").withPort(7006).build();
+        RedisClusterClient redisClusterClient = RedisClusterClient.create(redisURI);
+        return redisClusterClient;*/
     }
 
     public static void main(String[] args) {
-        StatefulRedisConnection<String, String> connection = streamConnection();
+        /*StatefulRedisConnection<String, String> connection = streamConnection();
         RedisCommands<String, String> redisCommands = connection.sync();
         String messageId = redisCommands.xadd("produce", Collections.singletonMap("key1", "value1"));
         String messageId1 = redisCommands.xadd("produce","myStream-test","myStream-test2");
@@ -63,7 +72,10 @@ public class RedisConnections {
         String messageId3 = redisCommands.xadd("produce", Collections.singletonMap("key3", "value3"));
         String messageId4 = redisCommands.xadd("produce", Collections.singletonMap("key4", "value4"));
         List<StreamMessage<String, String>> messages = redisCommands.xrange("produce", Range.create("-", "+"));
-        redisCommands.xread(XReadArgs.Builder.block(Duration.ofSeconds(1)),XReadArgs.StreamOffset.from("produce","0"));
+        redisCommands.xread(XReadArgs.Builder.block(Duration.ofSeconds(1)),XReadArgs.StreamOffset.from("produce","0"));*/
+        RedisClusterClient clusterClient = getClusterClient();
+        clusterClient.connect().sync().set("clusterKey", "123");
+        System.out.println();
     }
 
     private static void otherTest(RedisCommands<String, String> redisCommands, String messageId) {

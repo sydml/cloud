@@ -1,4 +1,6 @@
 dependencies {
     compile project(":common:common-base")
-    compile 'io.lettuce:lettuce-core:5.3.5.RELEASE'
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}")
+    compile("org.apache.commons:commons-pool2:2.8.0")
 }
