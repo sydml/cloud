@@ -1,0 +1,11 @@
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8100/eureka
+spring:
+  application:
+    name: etcd-server
+server:
+  port: 9102

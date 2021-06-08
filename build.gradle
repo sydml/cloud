@@ -9,6 +9,7 @@ buildscript {
     repositories {
         mavenLocal()
         maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
         maven { url "https://repo.spring.io/milestone" }
         maven { url "https://plugins.gradle.org/m2/" }
         mavenCentral()
@@ -146,5 +147,6 @@ configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("plat
         compile("org.springframework.boot:spring-boot-starter-actuator")
         // Eureka server
         compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:2.1.4.RELEASE")
+
     }
 }

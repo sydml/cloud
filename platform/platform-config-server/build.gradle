@@ -1,0 +1,6 @@
+dependencies {
+    compile("com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery:2.1.4.RELEASE")
+    compile("com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config:2.1.4.RELEASE")
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+
+}

@@ -20,7 +20,7 @@ import java.util.Collections;
 @SpringBootTest
 public class LettuceApplicationTest {
     @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
+    private RedisTemplate<String,Object> redisClusterTemplate;
 
     @Test
     public void test(){
@@ -31,6 +31,6 @@ public class LettuceApplicationTest {
         DefaultRedisScript<Long> script = new DefaultRedisScript<>();
         script.setResultType(Long.class);
         script.setScriptSource(new ResourceScriptSource(new ClassPathResource(luaPath)));
-        return redisTemplate.execute(script, Collections.singletonList(lockName), key, time) == null;
+        return redisClusterTemplate.execute(script, Collections.singletonList(lockName), key, time) == null;
     }
 }
