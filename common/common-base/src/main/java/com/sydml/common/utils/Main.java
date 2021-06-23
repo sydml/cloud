@@ -8,7 +8,7 @@ package com.sydml.common.utils;
 public class Main {
     public static void main(String[] args) throws Exception {
         //客户端代码
-        String text = "hello server!";
+        String text = "jd_aMPbmVEvvGez";
 
         //随机生成16位aes密钥
         byte[] aesKey = SecureRandomUtil.getRandom(16).getBytes();
@@ -24,7 +24,7 @@ public class Main {
 
         //使用服务端公钥加密aes密钥
         byte[] encryptKey = RSACipher.encrypt(Config.SERVER_PUBLIC_KEY, aesKey);
-        System.out.println("加密后的aes密钥:\n" + new String(encryptKey));
+        System.out.println("经RSA加密后的aes密钥:\n" + new String(encryptKey));
 
         //客户端发送密文、签名和加密后的aes密钥
         System.out.println("\n************************分割线************************\n");
@@ -33,7 +33,7 @@ public class Main {
         //服务端代码
         //使用服务端私钥对加密后的aes密钥解密
         byte[] aesKey1 = RSACipher.decrypt(Config.SERVER_PRIVATE_KEY, encryptKey);
-        System.out.println("解密后的aes密钥:\n" + new String(aesKey1));
+        System.out.println("经RSA解密后的aes密钥:\n" + new String(aesKey1));
 
         //使用客户端公钥验签
         boolean result = RSACipher.checkSign(Config.CLIENT_PUBLIC_KEY, aesKey1, signature);
