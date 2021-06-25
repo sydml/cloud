@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
  * @author Liuym
  * @date 2019/7/2 0002
  */
-@Component
+//@Component
 public class KafkaConsumer {
 
     @KafkaListener(topics = {"app_log"})

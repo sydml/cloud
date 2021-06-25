@@ -128,7 +128,7 @@ configure(subprojects.findAll { it.subprojects.empty && it.name.endsWith("-servi
     }
 }
 
-configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("platform-")}) {
+configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("platform-") && !it.name.endsWith("gateway-server")}) {
     ext {
 
     }
@@ -144,9 +144,38 @@ configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("plat
         project.name
     }
     dependencies {
-        compile("org.springframework.boot:spring-boot-starter-actuator")
         // Eureka server
+        compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:2.1.4.RELEASE")
+    }
+}
 
+
+configure(subprojects.findAll { it.subprojects.empty && it.name.startsWith("platform-") && it.name.endsWith("gateway-server")}) {
+    ext {
+
+    }
+    apply plugin: "org.springframework.boot"
+    apply plugin: "io.spring.dependency-management"
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
+        }
+    }
+    bootJar {
+        project.name
+    }
+    dependencies {
+        // Eureka server
+        compile("org.springframework.boot:spring-boot-starter-actuator")
+       /* compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:2.1.4.RELEASE"){
+            exclude group: 'org.springframework.boot',module: 'spring-boot-starter-web'
+        }*/
+        compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.1.4.RELEASE"){
+            exclude group: 'com.netflix.eureka',module: 'eureka-client'
+        }
+        // 排除低于eureka-client:1.9.13的版本导致的javax.ws.rs.WebApplicationException: java.lang.NoClassDefFoundError: vlsi/utils/CompactHashMap错误，不能发现其他服务
+        compile("com.netflix.eureka:eureka-client:1.9.13")
     }
 }

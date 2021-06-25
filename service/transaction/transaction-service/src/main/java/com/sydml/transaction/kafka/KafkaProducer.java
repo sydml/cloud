@@ -13,8 +13,8 @@ import java.util.UUID;
  * @author Liuym
  * @date 2019/7/2 0002
  */
-@Component
-@EnableScheduling
+//@Component
+//@EnableScheduling
 public class KafkaProducer {
 
     @Autowired

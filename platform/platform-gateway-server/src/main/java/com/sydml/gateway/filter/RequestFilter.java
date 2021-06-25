@@ -6,6 +6,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Mono;
  * @author Liuym
  * @date 2019/5/14 0014
  */
+@Component
 public class RequestFilter implements GatewayFilter, Ordered {
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestFilter.class);
 
@@ -32,7 +34,7 @@ public class RequestFilter implements GatewayFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 1;
+        return -200;
     }
 
 }

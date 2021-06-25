@@ -3,4 +3,5 @@ dependencies{
     compile("org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}")
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
     compile("org.springframework.cloud:spring-cloud-starter-gateway:2.1.4.RELEASE")
+//    compile("org.springframework.boot:spring-boot-starter:${springBootVersion}")
 }

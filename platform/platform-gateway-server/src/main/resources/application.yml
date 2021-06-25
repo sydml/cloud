@@ -5,23 +5,23 @@ spring:
     host: localhost
     port: 6379
     database: 0
-    timeout: 6000ms
-      database: 0
-      cluster:
-        nodes:
-          - 192.168.207.88:7001
-          - 192.168.207.88:7002
-          - 192.168.207.88:7003
-          - 192.168.207.88:7004
-          - 192.168.207.88:7005
-          - 192.168.207.88:7006
-        max-redirects: 3 # 获取失败 最大重定向次数
-      lettuce:
-        pool:
-          max-active: 1000  #连接池最大连接数（使用负值表示没有限制）
-          max-idle: 10 # 连接池中的最大空闲连接
-          min-idle: 5 # 连接池中的最小空闲连接
-          max-wait: -1 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+#    timeout: 6000ms
+#      database: 0
+#      cluster:
+#        nodes:
+#          - 192.168.207.88:7001
+#          - 192.168.207.88:7002
+#          - 192.168.207.88:7003
+#          - 192.168.207.88:7004
+#          - 192.168.207.88:7005
+#          - 192.168.207.88:7006
+#        max-redirects: 3 # 获取失败 最大重定向次数
+#      lettuce:
+#        pool:
+#          max-active: 1000  #连接池最大连接数（使用负值表示没有限制）
+#          max-idle: 10 # 连接池中的最大空闲连接
+#          min-idle: 5 # 连接池中的最小空闲连接
+#          max-wait: -1 # 连接池最大阻塞等待时间（使用负值表示没有限制）
   cloud:
     gateway:
       discovery:
@@ -33,8 +33,15 @@ spring:
         - id: api-authorization
           uri: lb://AUTHORIZATION
           predicates:
-            - Path=/api-authorization/*
+            - Path=/api-authorization/**
           filters:
+            - name: RequestRateLimiter
+              args:
+#                令牌桶生产令牌速度，10个/秒
+                redis-rate-limiter.replenishRate: 10
+#                令牌桶的容量，限制的洪峰请求量，一秒最大50个请求
+                redis-rate-limiter.burstCapacity: 50
+                key-resolver: "#{@ipKeyResolver}"
             - StripPrefix=1
 server:
   port: 9000
