@@ -14,10 +14,14 @@ HELP.md
 
 ### IntelliJ IDEA ###
 .idea
+/idea/
 *.iws
 *.iml
 *.ipr
 /out/
+
+#maven ignore
+target/
 
 ### NetBeans ###
 /nbproject/private/
@@ -25,3 +29,15 @@ HELP.md
 /dist/
 /nbdist/
 /.nb-gradle/
+
+#temp file
+
+*.log
+*.cache
+*.diff
+*.tmp
+*.class
+
+#system ignore
+.DS_Store
+Thumbs.db
