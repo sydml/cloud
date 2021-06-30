@@ -1,5 +1,6 @@
 package com.sydml.redis.controller;
 
+import com.sydml.common.utils.TimeUtil;
 import com.sydml.redis.queue.RedisDelayQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -7,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Yuming-Liu
@@ -47,6 +50,12 @@ public class RedisTestController {
     @GetMapping("/send-message")
     public String getMessage() {
        return redisDelayQueue.getMessage("message").toString();
+    }
+
+    @GetMapping("/set-with-timeout")
+    public void testSetWithTimeout(String redisKey,long timeOut) {
+//        jedis.set("test", "value");
+        jedis.set(redisKey, "testValue", "nx", "ex", 5);
     }
 
 }
