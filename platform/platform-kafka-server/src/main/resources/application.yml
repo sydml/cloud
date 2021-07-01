@@ -9,7 +9,7 @@ spring:
     name: kafka-service
   kafka:
     # 指定kafka 代理地址，可以多个
-    bootstrap-servers: 192.168.207.82:9092,192.168.207.82:9093,192.168.207.82:9094
+    bootstrap-servers: 172.17.131.121:9092,172.17.131.121:9093,172.17.131.121:9094
     producer:
       retries: 0
       # 每次批量发送消息的数量
