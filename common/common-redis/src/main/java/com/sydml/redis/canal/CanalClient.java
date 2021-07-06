@@ -14,6 +14,7 @@ import com.alibaba.otter.canal.protocol.CanalEntry.EventType;
 import com.alibaba.otter.canal.protocol.CanalEntry.RowChange;
 import com.alibaba.otter.canal.protocol.CanalEntry.RowData;
 import com.alibaba.otter.canal.client.*;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -21,6 +22,7 @@ import com.alibaba.otter.canal.client.*;
  * @date 2021-07-02 14:54:11
  * 执行时需要启动canal，/bin/startup.bat (windows)或则 /bin/startup.sh (linux)
  */
+@Slf4j
 public class CanalClient {
     public static void main(String args[]) {
         CanalConnector connector = CanalConnectors.newSingleConnector(new InetSocketAddress(AddressUtils.getHostIp(), 11111), "example", "canal", "canal");
@@ -57,28 +59,28 @@ public class CanalClient {
             if (entry.getEntryType() == EntryType.TRANSACTIONBEGIN || entry.getEntryType() == EntryType.TRANSACTIONEND) {
                 continue;
             }
-            RowChange rowChage = null;
+            RowChange rowChange = null;
             try {
-                rowChage = RowChange.parseFrom(entry.getStoreValue());
+                rowChange = RowChange.parseFrom(entry.getStoreValue());
             } catch (Exception e) {
                 throw new RuntimeException("ERROR ## parser of eromanga-event has an error , data:" + entry.toString(), e);
             }
-            EventType eventType = rowChage.getEventType();
-            System.out.printf("================> binlog[%s:%s] , name[%s,%s] , eventType : %s%n",
+            EventType eventType = rowChange.getEventType();
+            log.info("================> binlog is {} , LogfileOffset is {} , database is {},table is {}",
                     entry.getHeader().getLogfileName(), entry.getHeader().getLogfileOffset(),
                     entry.getHeader().getSchemaName(), entry.getHeader().getTableName(),
                     eventType);
             // 以 database:table: 作为redis的key
             String key = entry.getHeader().getSchemaName() + ":" + entry.getHeader().getTableName() + ":";
-            for (RowData rowData : rowChage.getRowDatasList()) {
+            for (RowData rowData : rowChange.getRowDatasList()) {
                 if (eventType == EventType.DELETE) {
                     redisDelete(rowData.getBeforeColumnsList(), key);
                 } else if (eventType == EventType.INSERT) {
                     redisInsert(rowData.getAfterColumnsList(), key);
                 } else {
-                    System.out.println("-------> before");
+                    log.info("-------> before");
                     printColumn(rowData.getBeforeColumnsList());
-                    System.out.println("-------> after");
+                    log.info("-------> after");
                     redisUpdate(rowData.getAfterColumnsList(), key);
                 }
             }
@@ -87,7 +89,7 @@ public class CanalClient {
 
     private static void printColumn(List<Column> columns) {
         for (Column column : columns) {
-            System.out.println(column.getName() + " : " + column.getValue() + "    update=" + column.getUpdated());
+            log.info(column.getName() + " : " + column.getValue() + "    update=" + column.getUpdated());
         }
     }
 
