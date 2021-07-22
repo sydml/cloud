@@ -17,7 +17,9 @@ import java.security.spec.X509EncodedKeySpec;
 public class RSACipher {
     public static final String KEY_ALGORITHM = "RSA";
     public static final String SIGNATURE_ALGORITHM = "MD5withRSA";
-//    public static final String SIGNATURE_ALGORITHM = "SHA256WithRSA";
+    public static final String SHA_256 = "SHA-256";
+    public static final String MGF_1 = "MGF1";
+    //    public static final String SIGNATURE_ALGORITHM = "SHA256WithRSA";
     /**
      * 加密方法
      *
@@ -29,7 +31,7 @@ public class RSACipher {
     public static byte[] encrypt(String publicKey, byte[] raw) throws Exception {
         Key key = getPublicKey(publicKey);
         Cipher cipher = Cipher.getInstance(Config.RSA_ALGORITHM);
-        cipher.init(Cipher.ENCRYPT_MODE, key, new OAEPParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, PSource.PSpecified.DEFAULT));
+        cipher.init(Cipher.ENCRYPT_MODE, key, new OAEPParameterSpec(SHA_256, MGF_1, MGF1ParameterSpec.SHA256, PSource.PSpecified.DEFAULT));
         byte[] b1 = cipher.doFinal(raw);
         return Base64.encodeBase64(b1);
     }
@@ -45,7 +47,7 @@ public class RSACipher {
     public static byte[] decrypt(String privateKey, byte[] enc) throws Exception {
         Key key = getPrivateKey(privateKey);
         Cipher cipher = Cipher.getInstance(Config.RSA_ALGORITHM);
-        cipher.init(Cipher.DECRYPT_MODE, key, new OAEPParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, PSource.PSpecified.DEFAULT));
+        cipher.init(Cipher.DECRYPT_MODE, key, new OAEPParameterSpec(SHA_256, MGF_1, MGF1ParameterSpec.SHA256, PSource.PSpecified.DEFAULT));
         return cipher.doFinal(Base64.decodeBase64(enc));
     }
 
@@ -87,8 +89,8 @@ public class RSACipher {
     public static String sign(String privateKey, byte[] content) {
         try {
             PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(Base64.decodeBase64(privateKey.getBytes()));
-            KeyFactory keyf = KeyFactory.getInstance(KEY_ALGORITHM);
-            PrivateKey priKey = keyf.generatePrivate(priPKCS8);
+            KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+            PrivateKey priKey = keyFactory.generatePrivate(priPKCS8);
             Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
             signature.initSign(priKey);
             signature.update(content);

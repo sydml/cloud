@@ -11,6 +11,8 @@ import java.util.Base64;
  */
 public class AESCipher {
 
+    public static final String AES = "AES";
+
     /**
      * 加密方法，使用key充当向量iv，增加加密算法的强度
      *
@@ -19,12 +21,12 @@ public class AESCipher {
      * @return
      */
     public static String encrypt(byte[] key, String raw) throws Exception {
-        SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
+        SecretKeySpec secretKey = new SecretKeySpec(key, AES);
         byte[] enCodeFormat = secretKey.getEncoded();
-        SecretKeySpec seckey = new SecretKeySpec(enCodeFormat, "AES");
+        SecretKeySpec secretKeySpec = new SecretKeySpec(enCodeFormat, AES);
         Cipher cipher = Cipher.getInstance(Config.AES_ALGORITHM);
         IvParameterSpec iv = new IvParameterSpec(key);
-        cipher.init(Cipher.ENCRYPT_MODE, seckey, iv);
+        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, iv);
         byte[] result = cipher.doFinal(raw.getBytes());
         Base64.Encoder encoder = Base64.getEncoder();
         return encoder.encodeToString(result);
@@ -38,9 +40,9 @@ public class AESCipher {
      * @return
      */
     public static String decrypt(byte[] key, String enc) throws Exception {
-        SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
+        SecretKeySpec secretKey = new SecretKeySpec(key, AES);
         byte[] enCodeFormat = secretKey.getEncoded();
-        SecretKeySpec seckey = new SecretKeySpec(enCodeFormat, "AES");
+        SecretKeySpec seckey = new SecretKeySpec(enCodeFormat, AES);
         Cipher cipher = Cipher.getInstance(Config.AES_ALGORITHM);
         IvParameterSpec iv = new IvParameterSpec(key);
         cipher.init(Cipher.DECRYPT_MODE, seckey, iv);
