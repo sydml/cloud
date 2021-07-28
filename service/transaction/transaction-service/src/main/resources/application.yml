@@ -89,3 +89,20 @@ spring:
 #    # 指定listener 容器中的线程数，用于提高并发量
 #    listener:
 #      concurrency: 3
+  mail:
+    username: test@qq.com
+    password: testpaassword
+    host: smtp.qq.com
+    port: 25
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+          port: ${spring.mail.port}
+          auth: true
+          starttls:
+            enable: true
+            required: true
